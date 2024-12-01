@@ -3,30 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to Speech</title>
+    <title>Text to Speech Converter</title>
+    <style>
+        body {
+            font-family: "Times New Roman", sans-serif;
+            background-color: grey;
+            margin: 0;
+            padding: 0;
+            background-image: url("/static/images.jfif");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+        .container {
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 500px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        textarea {
+            width: 95%;
+            height: 90px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        audio {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Text to Speech Converter</h1>
-    <form action="/convert" method="POST">
-        <label for="text">Enter text:</label>
-        <input type="text" id="text" name="text" required><br><br>
-        <label for="language">Choose language:</label>
-        <select id="language" name="language">
-            <option value="en">English</option>
-            <option value="kn">Kannada</option>
-        </select><br><br>
-        <button type="submit">Convert</button>
-    </form>
-    {% if audio_file %}
-        <h2>Generated Audio:</h2>
+    <div class="container">
+        <h1>Text to Speech Converter</h1>
+        <form action="/convert" method="post">
+            <label for="text">Enter text:</label>
+            <textarea id="text" name="text" required></textarea>
+            <br>
+            <label for="language">Select language:</label>
+            <select id="language" name="language" required>
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="kn">Kannada</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+            </select>
+            <br>
+            <button type="submit">Convert to Speech</button>
+        </form>
+        {% if audio_file %}
         <audio controls>
-            <source src="{{ audio_file }}" type="audio/mpeg">
+            <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-    {% endif %}
-    {% if error %}
-        <h2>Error:</h2>
-        <p>{{ error }}</p>
-    {% endif %}
+        {% endif %}
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
